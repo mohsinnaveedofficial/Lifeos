@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -29,8 +28,6 @@ class _DashboardPageState extends State<DashboardPage> with WidgetsBindingObserv
   final RxString userPhotoUrl = "".obs;
   final RxBool _isLoading = true.obs;
   final Rx<String?> _loadError = Rx<String?>(null);
-
-  AppLifecycleState? _lastLifecycleState;
 
   final RxInt _financeScore = 0.obs;
   final RxInt _productivityScore = 0.obs;
@@ -62,9 +59,7 @@ class _DashboardPageState extends State<DashboardPage> with WidgetsBindingObserv
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    _lastLifecycleState = state;
     if (state == AppLifecycleState.resumed) {
-      if (kDebugMode) print('Dashboard refreshing on app resume');
       _loadDashboard();
     }
   }
@@ -267,14 +262,14 @@ class _DashboardPageState extends State<DashboardPage> with WidgetsBindingObserv
               width: 40,
               height: 4,
               decoration: BoxDecoration(
-                color: colorScheme.outline.withOpacity(0.2),
+                color: colorScheme.outline.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
             const SizedBox(height: 20),
             ListTile(
               leading: CircleAvatar(
-                backgroundColor: colorScheme.primary.withOpacity(0.1),
+                backgroundColor: colorScheme.primary.withValues(alpha: 0.1),
                 backgroundImage: userPhotoUrl.value.isNotEmpty
                     ? CachedNetworkImageProvider(userPhotoUrl.value)
                     : null,
@@ -291,13 +286,13 @@ class _DashboardPageState extends State<DashboardPage> with WidgetsBindingObserv
               ),
               subtitle: Text(
                 _authController.currentUser?.email ?? "",
-                style: TextStyle(fontSize: 12, color: colorScheme.onSurface.withOpacity(0.6)),
+                style: TextStyle(fontSize: 12, color: colorScheme.onSurface.withValues(alpha: 0.6)),
               ),
             ),
             const Divider(),
             ListTile(
               leading: const Icon(Icons.person_outline),
-              title: const Text("Edit Profile"),
+              title: const Text("View Profile"),
               onTap: () {
                 Navigator.pop(context);
                 Get.toNamed(AppRoutes.editProfile);
@@ -383,7 +378,7 @@ class _DashboardPageState extends State<DashboardPage> with WidgetsBindingObserv
                                     const SizedBox(height: 4),
                                     Text(
                                       "Here's your daily overview",
-                                      style: TextStyle(color: colorScheme.onSurface.withOpacity(0.6)),
+                                      style: TextStyle(color: colorScheme.onSurface.withValues(alpha: 0.6)),
                                     ),
                                   ],
                                 ),
@@ -455,7 +450,7 @@ class _DashboardPageState extends State<DashboardPage> with WidgetsBindingObserv
                                             fontSize: 11,
                                             fontWeight: FontWeight.w600,
                                             letterSpacing: 0.5,
-                                            color: colorScheme.onSurface.withOpacity(0.5),
+                                            color: colorScheme.onSurface.withValues(alpha: 0.5),
                                           ),
                                         ),
                                       ],
@@ -656,7 +651,7 @@ class _DashboardPageState extends State<DashboardPage> with WidgetsBindingObserv
                                     context,
                                     color: Colors.orange,
                                     icon: Icons.check_circle,
-                                    icon_bg: Colors.orange.withValues(alpha: 0.1),
+                                    iconBg: Colors.orange.withValues(alpha: 0.1),
                                     title: "Tasks Due",
                                     subtitle: _tasksSubtitle.value,
                                     value: _tasksValue.value,
@@ -666,7 +661,7 @@ class _DashboardPageState extends State<DashboardPage> with WidgetsBindingObserv
                                     context,
                                     color: Colors.green,
                                     icon: Icons.credit_card,
-                                    icon_bg: Colors.green.withValues(alpha: 0.1),
+                                    iconBg: Colors.green.withValues(alpha: 0.1),
                                     title: "Spending",
                                     subtitle: _spendingSubtitle.value,
                                     value: _spendingValue.value,
@@ -676,7 +671,7 @@ class _DashboardPageState extends State<DashboardPage> with WidgetsBindingObserv
                                     context,
                                     color: Colors.blue,
                                     icon: Icons.water_drop,
-                                    icon_bg: Colors.blue.withValues(alpha: 0.1),
+                                    iconBg: Colors.blue.withValues(alpha: 0.1),
                                     title: "Water Intake",
                                     subtitle: _waterSubtitle.value,
                                     value: _waterValue.value,
@@ -686,7 +681,7 @@ class _DashboardPageState extends State<DashboardPage> with WidgetsBindingObserv
                                     context,
                                     color: Colors.purple,
                                     icon: Icons.mood,
-                                    icon_bg: Colors.purple.withValues(alpha: 0.1),
+                                    iconBg: Colors.purple.withValues(alpha: 0.1),
                                     title: "Mood Status",
                                     subtitle: _moodSubtitle.value,
                                     value: _moodValue.value,
@@ -721,7 +716,7 @@ class _DashboardPageState extends State<DashboardPage> with WidgetsBindingObserv
         color: colorScheme.surface,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
-          side: BorderSide(color: colorScheme.outline.withOpacity(0.1))
+          side: BorderSide(color: colorScheme.outline.withValues(alpha: 0.1))
         ),
         child: Padding(
           padding: const EdgeInsets.all(12.0),
@@ -737,7 +732,7 @@ class _DashboardPageState extends State<DashboardPage> with WidgetsBindingObserv
                 title,
                 style: GoogleFonts.raleway(
                   fontSize: 12,
-                  color: colorScheme.onSurface.withOpacity(0.6),
+                  color: colorScheme.onSurface.withValues(alpha: 0.6),
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -752,7 +747,7 @@ class _DashboardPageState extends State<DashboardPage> with WidgetsBindingObserv
               const SizedBox(height: 8),
               LinearProgressIndicator(
                 value: value / 100,
-                backgroundColor: colorScheme.outline.withOpacity(0.1),
+                backgroundColor: colorScheme.outline.withValues(alpha: 0.1),
                 color: color,
                 minHeight: 6,
                 borderRadius: BorderRadius.circular(20),
@@ -781,7 +776,7 @@ class _DashboardPageState extends State<DashboardPage> with WidgetsBindingObserv
         color: colorScheme.surface,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
-          side: BorderSide(color: colorScheme.outline.withOpacity(0.1))
+          side: BorderSide(color: colorScheme.outline.withValues(alpha: 0.1))
         ),
         child: Padding(
           padding: const EdgeInsets.all(12.0),
@@ -807,7 +802,7 @@ class _DashboardPageState extends State<DashboardPage> with WidgetsBindingObserv
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 12,
-                  color: colorScheme.onSurface.withOpacity(0.6),
+                  color: colorScheme.onSurface.withValues(alpha: 0.6),
                 ),
               ),
             ],
@@ -824,12 +819,12 @@ class _DashboardPageState extends State<DashboardPage> with WidgetsBindingObserv
     required String title,
     required String subtitle,
     required String value,
-    Color? icon_bg,
+    Color? iconBg,
   }) {
     final colorScheme = Theme.of(context).colorScheme;
     return ListTile(
       leading: CircleAvatar(
-        backgroundColor: icon_bg,
+        backgroundColor: iconBg,
         child: Icon(icon, color: color, size: 18),
       ),
       title: Text(
@@ -843,7 +838,7 @@ class _DashboardPageState extends State<DashboardPage> with WidgetsBindingObserv
         subtitle, 
         style: TextStyle(
           fontSize: 12,
-          color: colorScheme.onSurface.withOpacity(0.6),
+          color: colorScheme.onSurface.withValues(alpha: 0.6),
         )
       ),
       trailing: Text(
