@@ -148,8 +148,11 @@ class _FinanceState extends State<Finance> {
     }
   }
 
-  List<String> get _availableCategories {
-    final fromEntries = _entries.map((e) => e.category).toSet();
+  List<String> get _availableExpenseCategories {
+    final fromEntries = _entries
+        .where((e) => !e.isIncome && e.category != 'Income')
+        .map((e) => e.category)
+        .toSet();
     final categories = <String>{..._defaultCategories, ...fromEntries};
     final sorted = categories.toList()..sort();
     return sorted;
@@ -231,7 +234,7 @@ class _FinanceState extends State<Finance> {
     final amountController = TextEditingController();
     final noteController = TextEditingController();
 
-    String selectedCategory = _availableCategories.first;
+    String selectedCategory = _availableExpenseCategories.first;
     DateTime selectedDate = DateTime.now();
     String? error;
     bool isSaving = false;
@@ -423,7 +426,7 @@ class _FinanceState extends State<Finance> {
                               borderSide: const BorderSide(color: Color(0xFF1e3a8a)),
                             ),
                           ),
-                          items: _availableCategories
+                          items: _availableExpenseCategories
                               .map(
                                 (category) => DropdownMenuItem<String>(
                                   value: category,

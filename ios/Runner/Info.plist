@@ -51,5 +51,20 @@
 	<string>LifeOS needs photo library access so you can choose a profile picture.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>LifeOS may save selected profile pictures for your account setup.</string>
+	<key>FlutterDeepLinkingEnabled</key>
+	<true/>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>lifeos.app</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>lifeos</string>
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>
