@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:lifeos/screen/onboarding/welcome.dart';
+import 'package:lifeos/routes/app_routes.dart';
+import 'package:lifeos/services/auth_service.dart';
+import 'package:lifeos/services/startup_service.dart';
 
 class Splash extends StatefulWidget {
   const Splash({super.key});
@@ -10,18 +13,35 @@ class Splash extends StatefulWidget {
 }
 
 class _SplashState extends State<Splash> {
+  StartupService get _startupService => Get.isRegistered<StartupService>()
+      ? Get.find<StartupService>()
+      : StartupService();
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     _navigate();
+  }
+
+  void _navigate() async {
+    await Future.delayed(const Duration(seconds: 2));
+    if (!mounted) return;
+
+    final isAuthenticated =
+        Get.isRegistered<AuthService>() &&
+        Get.find<AuthService>().currentUser != null;
+
+    final isOnboardingCompleted = Get.isRegistered<StartupService>()
+        ? _startupService.onboardingCompleted
+        : await _startupService.isOnboardingCompleted();
+
+    if (!isOnboardingCompleted) {
+      Get.offNamed(isAuthenticated ? AppRoutes.personalize : AppRoutes.welcome);
+      return;
     }
 
-    void _navigate()async{
-      await Future.delayed(Duration(seconds: 2));
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Welcome()));
-
-    }
+    Get.offNamed(isAuthenticated ? AppRoutes.home : AppRoutes.login);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +67,13 @@ class _SplashState extends State<Splash> {
                 SizedBox(height: 100, width: 70),
                 Positioned(
                   bottom: 10,
-                  child: Image.asset('assets/icons/brain-organ.png',color: Colors.white,height: 70,width: 70,fit: BoxFit.cover,),
+                  child: Image.asset(
+                    'assets/icons/icon_bg.png',
+                    color: Colors.white,
+                    height: 70,
+                    width: 70,
+                    fit: BoxFit.cover,
+                  ),
                 ),
                 Positioned(
                   bottom: 0,
@@ -59,16 +85,33 @@ class _SplashState extends State<Splash> {
                       color: Color(0xFF3B82F6),
                       borderRadius: BorderRadius.circular(40),
                     ),
-                    child: Icon(Icons.dashboard_outlined,color: Colors.green,size: 20,),
+                    child: Icon(
+                      Icons.dashboard_outlined,
+                      color: Colors.green,
+                      size: 20,
+                    ),
                   ),
                 ),
               ],
             ),
-            SizedBox(height: 10,),
-
-      Text("LifeOS",style: GoogleFonts.raleway(color: Colors.white,fontSize: 36,fontWeight: FontWeight.w800)),
-            SizedBox(height: 5  ),
-            Text("Manage Your Entire Life in One Place",style: GoogleFonts.raleway(color: Color(0xFFB6CDFB),fontSize: 14,fontWeight: FontWeight.w600),)
+            SizedBox(
+              height: 10,
+            ),
+            Text(
+              "LifeOS",
+              style: GoogleFonts.raleway(
+                  color: Colors.white,
+                  fontSize: 36,
+                  fontWeight: FontWeight.w800),
+            ),
+            SizedBox(height: 5),
+            Text(
+              "Manage Your Entire Life in One Place",
+              style: GoogleFonts.raleway(
+                  color: Color(0xFFB6CDFB),
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600),
+            )
           ],
         ),
       ),

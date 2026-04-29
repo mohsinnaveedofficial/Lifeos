@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:lifeos/screen/auth/login.dart';
-import 'package:lifeos/screen/onboarding/features.dart';
+import 'package:lifeos/controllers/profile_controller.dart';
+import 'package:lifeos/routes/app_routes.dart';
+import 'package:lifeos/services/startup_service.dart';
 
 class Complete extends StatefulWidget {
   const Complete({super.key});
@@ -12,6 +14,9 @@ class Complete extends StatefulWidget {
 
 class _CompleteState extends State<Complete>
     with SingleTickerProviderStateMixin {
+  final StartupService _startupService = Get.find<StartupService>();
+  final ProfileController _profileController = Get.find<ProfileController>();
+  final RxString _greetingName = ''.obs;
   late AnimationController _controller;
   late Animation<double> _fadeAnimation;
 
@@ -27,6 +32,21 @@ class _CompleteState extends State<Complete>
       end: 1,
     ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
     _controller.repeat(reverse: true);
+    _loadGreetingName();
+  }
+
+  Future<void> _loadGreetingName() async {
+    try {
+      final draft = await _profileController.readOnboardingDraft();
+      final draftName = (draft['name'] as String? ?? '').trim();
+      if (draftName.isNotEmpty) {
+        if (!mounted) return;
+        _greetingName.value = draftName;
+        return;
+      }
+    } catch (_) {
+      // Ignore draft read failures.
+    }
   }
 
   @override
@@ -104,12 +124,16 @@ class _CompleteState extends State<Complete>
                 ],
               ),
               SizedBox(height: 10),
-              Text(
-                "You're all set, ws! 🎉",
-                style: GoogleFonts.raleway(
-                  color: Colors.white,
-                  fontSize: 34,
-                  fontWeight: FontWeight.w800,
+              Obx(
+                () => Text(
+                  _greetingName.value.isEmpty
+                      ? "You're all set! 🎉"
+                      : "You're all set, ${_greetingName.value}! 🎉",
+                  style: GoogleFonts.raleway(
+                    color: Colors.white,
+                    fontSize: 25,
+                    fontWeight: FontWeight.w800,
+                  ),
                 ),
               ),
 
@@ -249,11 +273,14 @@ class _CompleteState extends State<Complete>
               ),
               SizedBox(height: 40),
               TextButton.icon(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Login()),
-                  );
+                onPressed: () async {
+                  try {
+                    await _profileController.syncOnboardingDraftIfAny();
+                  } catch (_) {
+                    // Do not block onboarding completion if profile sync fails.
+                  }
+                  await _startupService.markOnboardingCompleted();
+                  Get.offAllNamed(AppRoutes.home);
                 },
 
                 icon: Icon(

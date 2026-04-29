@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lifeos/screen/dashboard.dart';
 import 'package:lifeos/screen/finance.dart';
@@ -14,66 +16,102 @@ class Homescreen extends StatefulWidget {
 }
 
 class _HomescreenState extends State<Homescreen> {
-  int currentIndex = 0;
-  final pages = [DashboardPage(), Finance(), Task(), Health(), Profile()];
+  final RxInt currentIndex = 0.obs;
+  final pages = [
+    const DashboardPage(),
+    const Finance(),
+    const Task(),
+    const Health(),
+    const Profile(),
+  ];
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: IndexedStack(index: currentIndex, children: pages),
-      bottomNavigationBar: ClipRRect(
-        child: Container(
-          margin: const EdgeInsets.fromLTRB(20, 10, 10, 8),
-          child: Theme(
-            data: Theme.of(context).copyWith(
-              splashColor: Colors.transparent,
-              highlightColor: Colors.transparent,
-            ),
-            child: BottomNavigationBar(
-              currentIndex: currentIndex,
-              onTap: (index) {
-                setState(() {
-                  currentIndex = index;
-                });
-              },
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
 
-              type: BottomNavigationBarType.fixed,
-              backgroundColor: Colors.transparent,
-              elevation: 0,
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, _) {
+        if (didPop) return;
 
-              unselectedItemColor: Colors.grey,
-              selectedItemColor: const Color(0xFF1e3a8a),
+        if (currentIndex.value != 0) {
+          currentIndex.value = 0;
+          return;
+        }
 
-              showUnselectedLabels: true,
-
-              selectedLabelStyle: GoogleFonts.lato(
-                color: const Color(0xFF1e3a8a),
-                fontWeight: FontWeight.w400,
-              ),
-
-              items: const [
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.dashboard_outlined),
-                  label: "Dashboard",
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.wallet_rounded),
-                  label: "Finance",
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.library_add_check_outlined),
-                  label: "Tasks",
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.monitor_heart_outlined),
-                  label: "Health",
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.person_outline),
-                  label: "Profile",
+        SystemNavigator.pop();
+      },
+      child: Obx(
+        () => Scaffold(
+          backgroundColor: theme.scaffoldBackgroundColor,
+          body: IndexedStack(index: currentIndex.value, children: pages),
+          bottomNavigationBar: Container(
+            padding: const EdgeInsets.fromLTRB(16, 7, 16, 7),
+            decoration: BoxDecoration(
+              color: colorScheme.surface,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.1),
+                  blurRadius: 10,
+                  offset: const Offset(0, 4),
                 ),
               ],
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(24),
+              child: Theme(
+                data: theme.copyWith(
+                  splashColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
+                ),
+                child: BottomNavigationBar(
+                  currentIndex: currentIndex.value,
+                  onTap: (index) {
+                    currentIndex.value = index;
+                  },
+                  type: BottomNavigationBarType.fixed,
+                  backgroundColor: Colors.transparent,
+                  elevation: 0,
+                  unselectedItemColor: colorScheme.onSurface.withValues(alpha: 0.4),
+                  selectedItemColor: colorScheme.primary,
+                  showUnselectedLabels: true,
+                  selectedLabelStyle: GoogleFonts.lato(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 12,
+                  ),
+                  unselectedLabelStyle: GoogleFonts.lato(
+                    fontSize: 12,
+                  ),
+                  items: const [
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.dashboard_outlined),
+                      activeIcon: Icon(Icons.dashboard),
+                      label: "Dashboard",
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.wallet_rounded),
+                      activeIcon: Icon(Icons.account_balance_wallet),
+                      label: "Finance",
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.library_add_check_outlined),
+                      activeIcon: Icon(Icons.library_add_check),
+                      label: "Tasks",
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.monitor_heart_outlined),
+                      activeIcon: Icon(Icons.monitor_heart),
+                      label: "Health",
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.person_outline),
+                      activeIcon: Icon(Icons.person),
+                      label: "Profile",
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
         ),

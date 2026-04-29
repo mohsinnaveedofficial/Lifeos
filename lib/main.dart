@@ -1,123 +1,162 @@
-import 'package:flutter/material.dart';
-import 'package:lifeos/screen/splash.dart';
+import 'dart:async';
+import 'dart:ui';
 
-void main() {
-  runApp(const MyApp());
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
+import 'package:get/get.dart';
+import 'package:lifeos/bindings/app_binding.dart';
+import 'package:lifeos/config/app_config.dart';
+import 'package:lifeos/controllers/theme_controller.dart';
+import 'package:lifeos/firebase_options.dart';
+import 'package:lifeos/config/firebase_config.dart';
+import 'package:lifeos/services/notification_service.dart';
+import 'package:lifeos/services/startup_service.dart';
+import 'package:lifeos/routes/app_pages.dart';
+import 'package:lifeos/routes/app_routes.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+Future<void> main() async {
+  // Run the app inside a guarded zone to ensure uncaught errors reach Crashlytics
+  runZonedGuarded<Future<void>>(
+    () async {
+      WidgetsFlutterBinding.ensureInitialized();
+
+      // Prefer compile-time provided Firebase options (via --dart-define) for
+      // CI/production builds so API keys are not hard-coded in source. Fallback
+      // to generated firebase_options.dart for local development.
+      final envOptions = loadFirebaseOptionsFromEnv();
+      await Firebase.initializeApp(
+        options: envOptions ?? DefaultFirebaseOptions.currentPlatform,
+      );
+
+      // Preload persisted theme before the first frame so the app does not
+      // flash back to the default mode on launch.
+      final prefs = await SharedPreferences.getInstance();
+      final savedTheme = prefs.getString(ThemeController.themeKey) ?? 'dark';
+      final initialThemeMode =
+          savedTheme == 'light' ? ThemeMode.light : ThemeMode.dark;
+      if (!Get.isRegistered<ThemeController>()) {
+        Get.put(
+          ThemeController(initialMode: initialThemeMode),
+          permanent: true,
+        );
+      }
+
+      final startupService = StartupService();
+      await startupService.init();
+      if (!Get.isRegistered<StartupService>()) {
+        Get.put(startupService, permanent: true);
+      }
+
+      // Initialize notifications after Firebase and before the first routed
+      // screen so reminder permissions and channels are ready.
+      await NotificationService().init();
+
+      if (kDebugMode && !AppConfig.hasApiBaseUrl) {
+        debugPrint(
+          'API_BASE_URL is empty. Provide --dart-define=API_BASE_URL for API-enabled builds.',
+        );
+      }
+
+      FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+      PlatformDispatcher.instance.onError = (error, stack) {
+        FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+        return true;
+      };
+
+      ErrorWidget.builder = (FlutterErrorDetails details) {
+        FirebaseCrashlytics.instance.recordFlutterError(details);
+        return const Material(
+          color: Colors.white,
+          child: Center(
+            child: Padding(
+              padding: EdgeInsets.all(20),
+              child: Text(
+                'Something went wrong. Please restart the app.',
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+        );
+      };
+
+      runApp(const MyApp());
+    },
+    (error, stack) async {
+      try {
+        await FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+      } catch (_) {
+        // ignore errors when reporting
+      }
+    },
+  );
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: .fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home: const Splash(),
-    );
-  }
-}
+    final themeController = Get.isRegistered<ThemeController>()
+        ? Get.find<ThemeController>()
+        : Get.put(ThemeController(), permanent: true);
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: .center,
-          children: [
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
+    return Obx(
+      () => GetMaterialApp(
+        title: 'LifeOS',
+        debugShowCheckedModeBanner: false,
+        themeMode: themeController.themeMode,
+        theme: ThemeData(
+          brightness: Brightness.light,
+          scaffoldBackgroundColor: const Color(0xFFF3F4F6),
+          colorScheme: const ColorScheme.light(
+            primary: Color(0xFF1E3A8A),
+            onPrimary: Colors.white,
+            secondary: Color(0xFF22C55E),
+            onSecondary: Colors.white,
+            surface: Colors.white,
+            onSurface: Color(0xFF111827),
+            error: Color(0xFFEF4444),
+            onError: Colors.white,
+            outline: Colors.black45,
+            tertiary: Color(0xFFDBEAFE),
+            onTertiary: Color(0xFF1E3A8A),
+          ),
+          cardTheme: const CardThemeData(
+            color: Colors.white,
+          ),
+          dividerTheme: const DividerThemeData(
+            color: Color(0xFFE5E7EB),
+          ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+        darkTheme: ThemeData(
+          brightness: Brightness.dark,
+          scaffoldBackgroundColor: const Color(0xFF0F172A),
+          colorScheme: const ColorScheme.dark(
+            primary: Color(0xFF3B82F6),
+            onPrimary: Colors.white,
+            secondary: Color(0xFF22C55E),
+            onSecondary: Colors.white,
+            surface: Color(0xFF1E293B),
+            onSurface: Color(0xFFF8FAFC),
+            error: Color(0xFFEF4444),
+            onError: Colors.white,
+            outline: Color(0xFF6E91AC),
+            tertiary: Color(0xFF1E293B),
+            onTertiary: Color(0xFFF8FAFC),
+          ),
+          cardTheme: const CardThemeData(
+            color: Color(0xFF1E293B),
+          ),
+          dividerTheme: const DividerThemeData(
+            color: Color(0xFF334155),
+          ),
+        ),
+        initialRoute: AppRoutes.splash,
+        getPages: AppPages.routes,
+        initialBinding: AppBinding(),
       ),
     );
   }

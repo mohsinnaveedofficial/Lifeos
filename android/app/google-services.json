@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "551580028728",
+    "firebase_url": "https://lifeos-493607-default-rtdb.firebaseio.com",
+    "project_id": "lifeos-493607",
+    "storage_bucket": "lifeos-493607.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:551580028728:android:1c60e601a422eb79b23bcd",
+        "android_client_info": {
+          "package_name": "com.example.lifeos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "551580028728-0sjc48ub589ku6m27ok8vrrvijgc3hca.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.lifeos",
+            "certificate_hash": "f9bc17d052858ee178dc05f4647b1b8120ebacfa"
+          }
+        },
+        {
+          "client_id": "551580028728-shs1ccr4pfm9unkgurud4nbcq8d2obv6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIT6HLOAO4wqD7gRF5uZ4KdQlw8ecrfN8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "551580028728-shs1ccr4pfm9unkgurud4nbcq8d2obv6.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "551580028728-3t4j7uer698dbe0a83mju6lkgbrbvlc2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.lifeos"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

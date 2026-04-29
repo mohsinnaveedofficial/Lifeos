@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;900&amp;family=Manrope:wght@200;300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary-container": "#f39461",
+                    "error-container": "#ffdad6",
+                    "inverse-primary": "#b6c4ff",
+                    "tertiary": "#4b1c00",
+                    "tertiary-fixed-dim": "#ffb691",
+                    "surface-tint": "#4059aa",
+                    "on-primary-fixed-variant": "#264191",
+                    "primary-container": "#1e3a8a",
+                    "on-secondary-container": "#007432",
+                    "on-secondary-fixed-variant": "#005321",
+                    "on-surface-variant": "#444651",
+                    "primary-fixed-dim": "#b6c4ff",
+                    "surface-container-low": "#f3f4f6",
+                    "inverse-on-surface": "#f0f1f3",
+                    "on-tertiary-fixed": "#341100",
+                    "outline-variant": "#c5c5d3",
+                    "background": "#f8f9fb",
+                    "surface-container": "#edeef0",
+                    "on-tertiary-fixed-variant": "#773205",
+                    "inverse-surface": "#2e3132",
+                    "on-secondary-fixed": "#002109",
+                    "error": "#ba1a1a",
+                    "on-error-container": "#93000a",
+                    "surface-container-highest": "#e1e2e4",
+                    "on-surface": "#191c1e",
+                    "surface-container-lowest": "#ffffff",
+                    "secondary-fixed": "#6bff8f",
+                    "on-tertiary": "#ffffff",
+                    "surface": "#f8f9fb",
+                    "secondary-fixed-dim": "#4ae176",
+                    "surface-dim": "#d9dadc",
+                    "surface-bright": "#f8f9fb",
+                    "secondary": "#006e2f",
+                    "surface-container-high": "#e7e8ea",
+                    "on-primary-fixed": "#00164e",
+                    "surface-variant": "#e1e2e4",
+                    "primary-fixed": "#dce1ff",
+                    "on-background": "#191c1e",
+                    "tertiary-container": "#6e2c00",
+                    "primary": "#00236f",
+                    "on-primary-container": "#90a8ff",
+                    "tertiary-fixed": "#ffdbcb",
+                    "secondary-container": "#6bff8f",
+                    "on-primary": "#ffffff",
+                    "on-error": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "outline": "#757682"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Space Grotesk"],
+                    "body": ["Manrope"],
+                    "label": ["Manrope"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .tonal-boundary {
+            background-color: transparent;
+        }
+        .glass-panel {
+            background: rgba(248, 249, 251, 0.7);
+            backdrop-filter: blur(30px);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background font-body text-on-surface overflow-hidden">
+<!-- Main Canvas -->
+<div class="relative min-h-screen flex flex-col items-center justify-between overflow-hidden px-8 py-12">
+<!-- Abstract Background Elements -->
+<div class="absolute inset-0 z-0 pointer-events-none">
+<div class="absolute -top-[10%] -right-[10%] w-[80%] h-[60%] bg-gradient-to-br from-primary-fixed to-background opacity-20 rounded-full blur-3xl"></div>
+<div class="absolute -bottom-[20%] -left-[10%] w-[90%] h-[70%] bg-gradient-to-tr from-secondary-fixed to-background opacity-10 rounded-full blur-3xl"></div>
+</div>
+<!-- Top Navigation Shell (Suppressed as per Transactional/Onboarding Rule but maintained for Brand) -->
+<header class="z-20 flex justify-between items-center w-full max-w-screen-xl mx-auto top-0 px-6 pt-4 bg-transparent text-blue-900 dark:text-blue-100">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-blue-900 dark:text-blue-50" data-icon="bubble_chart">bubble_chart</span>
+<h1 class="font-headline font-bold text-2xl tracking-tighter text-blue-900 dark:text-blue-50">LifeOS</h1>
+</div>
+<button class="text-slate-400 font-label font-semibold hover:opacity-80 transition-opacity">Skip</button>
+</header>
+<!-- Centered Visual Content -->
+<main class="z-10 flex-1 flex flex-col items-center justify-center w-full max-w-md text-center">
+<!-- Animated Aesthetic Clock/Icon Container -->
+<div class="relative w-72 h-72 mb-16 flex items-center justify-center">
+<!-- Outer Glow and Rings -->
+<div class="absolute inset-0 bg-primary opacity-5 rounded-full blur-2xl"></div>
+<div class="absolute inset-4 border border-outline-variant opacity-20 rounded-full"></div>
+<div class="absolute inset-12 border border-outline-variant opacity-40 rounded-full"></div>
+<!-- Main Iconic Element: Bento-styled Glass Card -->
+<div class="relative w-48 h-48 surface-container-lowest glass-panel rounded-[40px] flex items-center justify-center shadow-[0_32px_64px_rgba(0,35,111,0.08)]">
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-7xl text-primary font-light" data-icon="pace" style="font-variation-settings: 'FILL' 0, 'wght' 200;">pace</span>
+<!-- Minimalist Progress Pulse -->
+<div class="mt-4 flex gap-1">
+<div class="w-1.5 h-1.5 rounded-full bg-secondary"></div>
+<div class="w-1.5 h-1.5 rounded-full bg-secondary-fixed"></div>
+<div class="w-1.5 h-1.5 rounded-full bg-secondary-fixed"></div>
+</div>
+</div>
+</div>
+<!-- Floating Decorative Elements -->
+<div class="absolute top-0 right-4 p-4 surface-container-lowest rounded-2xl shadow-xl">
+<span class="material-symbols-outlined text-secondary" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="absolute bottom-8 left-0 p-3 surface-container-lowest rounded-xl shadow-lg border border-outline-variant/10">
+<span class="material-symbols-outlined text-primary/40" data-icon="timer">timer</span>
+</div>
+</div>
+<!-- Typography Content -->
+<div class="space-y-6">
+<h2 class="font-headline font-bold text-4xl lg:text-5xl tracking-tight text-on-surface">
+                    Optimize Your Focus
+                </h2>
+<p class="font-body text-lg text-on-surface-variant leading-relaxed px-4">
+                    Manage tasks and use the built-in Pomodoro timer to stay in the flow.
+                </p>
+</div>
+</main>
+<!-- Bottom Controls & Progression -->
+<footer class="z-20 w-full max-w-md flex flex-col items-center gap-10">
+<!-- Progress Dots (4 of 4) -->
+<div class="flex gap-3 items-center">
+<div class="w-2 h-2 rounded-full bg-surface-container-highest"></div>
+<div class="w-2 h-2 rounded-full bg-surface-container-highest"></div>
+<div class="w-2 h-2 rounded-full bg-surface-container-highest"></div>
+<div class="w-8 h-2 rounded-full bg-primary"></div>
+</div>
+<!-- Primary Action Button -->
+<button class="group relative w-full overflow-hidden bg-gradient-to-br from-primary to-primary-container text-on-primary py-5 px-8 rounded-xl font-headline font-bold text-lg shadow-[0_12px_24px_rgba(0,35,111,0.2)] active:scale-[0.98] transition-all duration-200">
+<span class="relative z-10">Get Started</span>
+<div class="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+</button>
+<div class="h-4"></div> <!-- Spacer for safe area -->
+</footer>
+</div>
+<!-- Background Images for Texture -->
+<div class="fixed inset-0 -z-10 opacity-30 pointer-events-none">
+<img class="w-full h-full object-cover mix-blend-overlay" data-alt="abstract flowing 3d ribbons in soft blue and white hues with clean minimalist architectural aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCqMcszIGsB7sKpAwEFU3XTwX30dm3ifAT49JEqwAK_cm9ctoNk5wfib1I-k4CUh1PwriU5WjeMDNT7K51ibJO7AXU8hTxBdwrTOa2gfEUYz2TOMB00FGdU-rhEJ3jWG4igrv1sQReowxTTLEiWocs3ARdMQQqSaYB64wZm1cB_i01rXJcNfDSDZyYd9fgm1P7lhjjXE6IMrb4sR-GbzLsKze6rVy6TLjm6zfGFzPMpaQWUTVaE-R3IJtcEmfv2C5a1nddZ8Q7djw6i"/>
+</div>
+</body></html>

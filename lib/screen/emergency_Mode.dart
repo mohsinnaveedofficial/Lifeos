@@ -9,15 +9,21 @@ class EmergencyMode extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final isDark = theme.brightness == Brightness.dark;
+
     return Scaffold(
-      backgroundColor: _bgPink,
+      backgroundColor:
+      isDark ? theme.scaffoldBackgroundColor : _bgPink,
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 40.0),
+          padding:
+          const EdgeInsets.symmetric(horizontal: 24.0, vertical: 40.0),
           child: Column(
             children: [
-
-              Icon(Icons.warning_amber_rounded, color: _emergencyRed, size: 48),
+              Icon(Icons.warning_amber_rounded,
+                  color: _emergencyRed, size: 48),
               const SizedBox(height: 16),
               Text(
                 "Emergency Mode",
@@ -34,7 +40,9 @@ class EmergencyMode extends StatelessWidget {
                 style: GoogleFonts.inter(
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
-                  color: _emergencyRed.withOpacity(0.8),
+                  color: isDark
+                      ? colorScheme.onSurface.withOpacity(0.7)
+                      : _emergencyRed.withOpacity(0.8),
                 ),
               ),
               const SizedBox(height: 60),
@@ -69,23 +77,32 @@ class EmergencyMode extends StatelessWidget {
               const SizedBox(height: 60),
 
               _buildActionButton(
+                context: context,
                 icon: Icons.call,
                 label: "Call Emergency Services (911)",
                 textColor: _emergencyRed,
               ),
               const SizedBox(height: 16),
               _buildActionButton(
+                context: context,
                 icon: Icons.share_location,
                 label: "Share Live Location",
-                textColor: const Color(0xff1E293B),
+                textColor: isDark
+                    ? colorScheme.onSurface
+                    : const Color(0xff1E293B),
               ),
               const SizedBox(height: 32),
 
               Container(
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: isDark
+                      ? colorScheme.surface
+                      : Colors.white,
                   borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: _emergencyRed.withOpacity(0.1)),
+                  border: Border.all(
+                      color: isDark
+                          ? colorScheme.outline
+                          : _emergencyRed.withOpacity(0.1)),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -101,10 +118,22 @@ class EmergencyMode extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const Divider(height: 1),
-                    _buildContactTile("Mom", "+1 (555) 123-4567"),
-                    const Divider(height: 1, indent: 20, endIndent: 20),
-                    _buildContactTile("Partner", "+1 (555) 987-6543"),
+                    Divider(
+                        height: 1,
+                        color: isDark
+                            ? colorScheme.outline
+                            : null),
+                    _buildContactTile(context, "Mom",
+                        "+1 (555) 123-4567"),
+                    Divider(
+                        height: 1,
+                        indent: 20,
+                        endIndent: 20,
+                        color: isDark
+                            ? colorScheme.outline
+                            : null),
+                    _buildContactTile(context, "Partner",
+                        "+1 (555) 987-6543"),
                   ],
                 ),
               ),
@@ -116,19 +145,25 @@ class EmergencyMode extends StatelessWidget {
   }
 
   Widget _buildActionButton({
+    required BuildContext context,
     required IconData icon,
     required String label,
     required Color textColor,
   }) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final isDark = theme.brightness == Brightness.dark;
+
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(vertical: 18),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: isDark ? colorScheme.surface : Colors.white,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color:
+            isDark ? Colors.black54 : Colors.black.withOpacity(0.05),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -152,15 +187,23 @@ class EmergencyMode extends StatelessWidget {
     );
   }
 
+  Widget _buildContactTile(
+      BuildContext context, String name, String phone) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final isDark = theme.brightness == Brightness.dark;
 
-  Widget _buildContactTile(String name, String phone) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      padding:
+      const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       child: Row(
         children: [
           CircleAvatar(
-            backgroundColor: const Color(0xffFFE4E6),
-            child: Icon(Icons.phone_outlined, color: _emergencyRed, size: 20),
+            backgroundColor: isDark
+                ? colorScheme.surface
+                : const Color(0xffFFE4E6),
+            child: Icon(Icons.phone_outlined,
+                color: _emergencyRed, size: 20),
           ),
           const SizedBox(width: 16),
           Expanded(
@@ -171,14 +214,15 @@ class EmergencyMode extends StatelessWidget {
                   name,
                   style: GoogleFonts.inter(
                     fontWeight: FontWeight.w700,
-                    color: const Color(0xff1E293B),
+                    color: colorScheme.onSurface,
                   ),
                 ),
                 Text(
                   phone,
                   style: GoogleFonts.inter(
                     fontSize: 13,
-                    color: const Color(0xff64748B),
+                    color:
+                    colorScheme.onSurface.withOpacity(0.6),
                   ),
                 ),
               ],

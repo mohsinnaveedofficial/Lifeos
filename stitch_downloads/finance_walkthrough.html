@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Manrope:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-container": "#f39461",
+                        "error-container": "#ffdad6",
+                        "inverse-primary": "#b6c4ff",
+                        "tertiary": "#4b1c00",
+                        "tertiary-fixed-dim": "#ffb691",
+                        "surface-tint": "#4059aa",
+                        "on-primary-fixed-variant": "#264191",
+                        "primary-container": "#1e3a8a",
+                        "on-secondary-container": "#007432",
+                        "on-secondary-fixed-variant": "#005321",
+                        "on-surface-variant": "#444651",
+                        "primary-fixed-dim": "#b6c4ff",
+                        "surface-container-low": "#f3f4f6",
+                        "inverse-on-surface": "#f0f1f3",
+                        "on-tertiary-fixed": "#341100",
+                        "outline-variant": "#c5c5d3",
+                        "background": "#f8f9fb",
+                        "surface-container": "#edeef0",
+                        "on-tertiary-fixed-variant": "#773205",
+                        "inverse-surface": "#2e3132",
+                        "on-secondary-fixed": "#002109",
+                        "error": "#ba1a1a",
+                        "on-error-container": "#93000a",
+                        "surface-container-highest": "#e1e2e4",
+                        "on-surface": "#191c1e",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-fixed": "#6bff8f",
+                        "on-tertiary": "#ffffff",
+                        "surface": "#f8f9fb",
+                        "secondary-fixed-dim": "#4ae176",
+                        "surface-dim": "#d9dadc",
+                        "surface-bright": "#f8f9fb",
+                        "secondary": "#006e2f",
+                        "surface-container-high": "#e7e8ea",
+                        "on-primary-fixed": "#00164e",
+                        "surface-variant": "#e1e2e4",
+                        "primary-fixed": "#dce1ff",
+                        "on-background": "#191c1e",
+                        "tertiary-container": "#6e2c00",
+                        "primary": "#00236f",
+                        "on-primary-container": "#90a8ff",
+                        "tertiary-fixed": "#ffdbcb",
+                        "secondary-container": "#6bff8f",
+                        "on-primary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "outline": "#757682"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Manrope"],
+                        "label": ["Manrope"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Manrope', sans-serif; }
+        .font-headline { font-family: 'Space Grotesk', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .tonal-boundary {
+            background: linear-gradient(180deg, rgba(248, 249, 251, 0.9) 0%, rgba(248, 249, 251, 0) 100%);
+        }
+        .glass-card {
+            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.4);
+        }
+        .flat-no-shadows {
+            box-shadow: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen flex flex-col overflow-hidden">
+<!-- Top Navigation Bar (Transactional Suppression Logic Applied) -->
+<header class="w-full top-0 px-6 pt-4 flex justify-between items-center w-full max-w-screen-xl mx-auto bg-transparent z-50">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-blue-900 dark:text-blue-100 text-3xl">bubble_chart</span>
+<h1 class="text-blue-900 dark:text-blue-50 font-black tracking-tight font-['Space_Grotesk'] text-2xl tracking-tighter">LifeOS</h1>
+</div>
+<button class="text-slate-400 dark:text-slate-500 font-['Manrope'] font-semibold hover:opacity-80 transition-opacity tap-scale-95">Skip</button>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 flex flex-col items-center justify-center px-8 relative">
+<!-- Abstract Background Shape -->
+<div class="absolute inset-0 z-0 flex items-center justify-center opacity-30">
+<div class="w-[500px] h-[500px] bg-primary-fixed blur-[120px] rounded-full"></div>
+</div>
+<!-- Hero Visual Section -->
+<div class="relative z-10 w-full max-w-md flex flex-col items-center mb-12">
+<!-- Glassmorphic Icon Container -->
+<div class="w-64 h-64 relative flex items-center justify-center mb-8">
+<!-- Floating Elements for Architectural Depth -->
+<div class="absolute -top-4 -right-4 w-24 h-24 bg-secondary-container/20 rounded-full blur-xl"></div>
+<div class="absolute -bottom-6 -left-6 w-32 h-32 bg-primary-container/10 rounded-full blur-2xl"></div>
+<!-- Main Visual: Minimalist Wallet + Trend Line -->
+<div class="glass-card w-48 h-48 rounded-[40px] flex flex-col items-center justify-center shadow-xl border border-white/40 relative overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-tr from-primary/5 to-transparent"></div>
+<span class="material-symbols-outlined text-7xl text-primary mb-2" style="font-variation-settings: 'FILL' 1;">account_balance_wallet</span>
+<!-- Simplified Growth Trend SVG -->
+<div class="absolute bottom-10 w-full px-6">
+<svg class="w-full" fill="none" viewbox="0 0 100 30" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 25C15 25 25 15 40 18C55 21 65 5 100 2" stroke="url(#paint0_linear)" stroke-linecap="round" stroke-width="3"></path>
+<defs>
+<lineargradient gradientunits="userSpaceOnUse" id="paint0_linear" x1="0" x2="100" y1="25" y2="2">
+<stop stop-color="#00236f"></stop>
+<stop offset="1" stop-color="#6bff8f"></stop>
+</lineargradient>
+</defs>
+</svg>
+</div>
+</div>
+<!-- Secondary Floating Chips (Architectural Tension) -->
+<div class="absolute top-12 -right-4 glass-card px-4 py-2 rounded-full border border-white/50 shadow-sm flex items-center gap-2">
+<span class="w-2 h-2 bg-secondary rounded-full"></span>
+<span class="text-[10px] font-bold text-on-surface-variant tracking-wider uppercase">Savings +12%</span>
+</div>
+</div>
+<!-- Content Hierarchy -->
+<div class="text-center">
+<h2 class="font-headline text-4xl md:text-5xl font-bold text-on-surface tracking-tighter leading-tight mb-4">
+                    Gain Financial Clarity
+                </h2>
+<p class="font-body text-lg text-on-surface-variant leading-relaxed opacity-80 max-w-sm mx-auto">
+                    Monitor spending, track income, and hit your savings goals effortlessly.
+                </p>
+</div>
+</div>
+<!-- Secondary Visual Anchor (Bento Style Sub-info) -->
+<div class="w-full max-w-sm grid grid-cols-2 gap-4 mt-4 relative z-10">
+<div class="bg-surface-container-lowest p-5 rounded-xl flex flex-col gap-2">
+<span class="material-symbols-outlined text-primary text-2xl">trending_up</span>
+<span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Growth</span>
+<div class="h-1 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full w-2/3 bg-secondary rounded-full"></div>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-5 rounded-xl flex flex-col gap-2">
+<span class="material-symbols-outlined text-on-tertiary-container text-2xl">savings</span>
+<span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Reserve</span>
+<div class="flex items-baseline gap-1">
+<span class="text-xl font-bold text-on-surface">$2.4k</span>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer Actions (Bottom Anchor) -->
+<footer class="w-full px-8 pb-12 pt-6 flex flex-col items-center gap-8 relative z-20">
+<!-- Progress Dots (3 of 4) -->
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-slate-300"></div>
+<div class="w-2 h-2 rounded-full bg-slate-300"></div>
+<div class="w-8 h-2 rounded-full bg-primary transition-all"></div>
+<div class="w-2 h-2 rounded-full bg-slate-300"></div>
+</div>
+<!-- Action Button -->
+<div class="w-full max-w-sm">
+<button class="w-full py-5 px-8 bg-gradient-to-br from-[#00236f] to-[#1e3a8a] text-white rounded-2xl text-lg font-bold shadow-lg active:scale-[0.98] transition-transform duration-200 flex justify-center items-center gap-2">
+                Next
+                <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</footer>
+<!-- Decorative Image Layer (Contextual Mood) -->
+<div class="fixed bottom-0 left-0 w-full h-1/2 -z-10 pointer-events-none overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+<img class="w-full h-full object-cover opacity-5" data-alt="subtle abstract blueprint pattern with soft glowing grid lines and architectural geometry on a light blue background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCko1UkBq_WmtrFH9kZAfvDVC6MR_LClt3o6_OYfx2KOMCbOlcTN1CkcFpiRoAM9wAQV7c2X8lRcvDrPnnLQKVNeB2lWh9K6B1eUwXwRPMSfiBQ7fKOJVoPWl0MetgVhgF3dzbsXGCnMiNrhgkVpR1n0ibW3dT6aZWkU838aR-nTzK3q63pdj4m374TdgE3BfK5AgZ46grEQpOESQdMluDfLy-tOIq-1wNugfD9k3adk7mMTftONfv_L5uMl5JKQ8Yami8QSxQytR-1"/>
+</div>
+</body></html>
