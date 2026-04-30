@@ -20,6 +20,7 @@ class _SignupState extends State<Signup> {
 
   final RxBool _obscurePassword = true.obs;
   final RxBool _obscureConfirmPassword = true.obs;
+  final RxBool _showPasswordRules = false.obs;
 
   final RxBool _hasLength = false.obs;
   final RxBool _hasUppercase = false.obs;
@@ -31,7 +32,9 @@ class _SignupState extends State<Signup> {
   void initState() {
     super.initState();
     _passwordController.addListener(() {
-      _checkPasswordStrength(_passwordController.text);
+      final text = _passwordController.text;
+      _showPasswordRules.value = text.isNotEmpty;
+      _checkPasswordStrength(text);
     });
   }
 
@@ -156,7 +159,7 @@ class _SignupState extends State<Signup> {
                   color: isDark ? colorScheme.surface : Colors.white,
                   boxShadow: [
                     BoxShadow(
-                      color: isDark ? Colors.black54 : Colors.black.withOpacity(0.1),
+                      color: isDark ? Colors.black54 : Colors.black.withValues(alpha: 0.1),
                       blurRadius: 8,
                       offset: const Offset(0, 4),
                       spreadRadius: 2,
@@ -179,7 +182,7 @@ class _SignupState extends State<Signup> {
                       'Enter your email below to create your account',
                       textAlign: TextAlign.center,
                       style: GoogleFonts.raleway(
-                        color: colorScheme.onSurface.withOpacity(0.6),
+                        color: colorScheme.onSurface.withValues(alpha: 0.6),
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
                       ),
@@ -194,7 +197,7 @@ class _SignupState extends State<Signup> {
                         filled: true,
                         prefixIcon: Icon(Icons.email_outlined, color: colorScheme.primary),
                         hintText: 'name@example.com',
-                        hintStyle: TextStyle(color: colorScheme.onSurface.withOpacity(0.5)),
+                        hintStyle: TextStyle(color: colorScheme.onSurface.withValues(alpha: 0.5)),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(20),
                           borderSide: BorderSide(
@@ -204,70 +207,13 @@ class _SignupState extends State<Signup> {
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(20),
                           borderSide: BorderSide(
-                            color: colorScheme.primary.withOpacity(0.5),
+                            color: colorScheme.primary.withValues(alpha: 0.5),
                             width: 3,
                           ),
                         ),
                       ),
                     ),
-                    if (_passwordController.text.isNotEmpty)
-                      Column(
-                        children: [
-                          const SizedBox(height: 16),
-                          Container(
-                            padding: const EdgeInsets.all(12),
-                            decoration: BoxDecoration(
-                              color: colorScheme.surface.withOpacity(0.5),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Obx(
-                              () => Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Password Requirements',
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w600,
-                                      color: colorScheme.onSurface,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 8),
-                                  _buildPasswordRequirement(
-                                    _hasLength.value,
-                                    'At least 8 characters',
-                                    colorScheme,
-                                  ),
-                                  const SizedBox(height: 4),
-                                  _buildPasswordRequirement(
-                                    _hasUppercase.value,
-                                    'One uppercase letter',
-                                    colorScheme,
-                                  ),
-                                  const SizedBox(height: 4),
-                                  _buildPasswordRequirement(
-                                    _hasLowercase.value,
-                                    'One lowercase letter',
-                                    colorScheme,
-                                  ),
-                                  const SizedBox(height: 4),
-                                  _buildPasswordRequirement(
-                                    _hasNumber.value,
-                                    'One number',
-                                    colorScheme,
-                                  ),
-                                  const SizedBox(height: 4),
-                                  _buildPasswordRequirement(
-                                    _hasSpecial.value,
-                                    'One special character (!@#\$%^&*)',
-                                    colorScheme,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+
                     const SizedBox(height: 20),
                     Obx(
                       () => TextField(
@@ -284,11 +230,11 @@ class _SignupState extends State<Signup> {
                             },
                             icon: Icon(
                               _obscurePassword.value ? Icons.visibility_off : Icons.visibility,
-                              color: colorScheme.onSurface.withOpacity(0.6),
+                              color: colorScheme.onSurface.withValues(alpha: 0.6),
                             ),
                           ),
                           hintText: 'Password',
-                          hintStyle: TextStyle(color: colorScheme.onSurface.withOpacity(0.5)),
+                          hintStyle: TextStyle(color: colorScheme.onSurface.withValues(alpha: 0.5)),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20),
                             borderSide: BorderSide(
@@ -298,7 +244,7 @@ class _SignupState extends State<Signup> {
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20),
                             borderSide: BorderSide(
-                              color: colorScheme.primary.withOpacity(0.5),
+                              color: colorScheme.primary.withValues(alpha: 0.5),
                               width: 3,
                             ),
                           ),
@@ -321,11 +267,11 @@ class _SignupState extends State<Signup> {
                             },
                             icon: Icon(
                               _obscureConfirmPassword.value ? Icons.visibility_off : Icons.visibility,
-                              color: colorScheme.onSurface.withOpacity(0.6),
+                              color: colorScheme.onSurface.withValues(alpha: 0.6),
                             ),
                           ),
                           hintText: 'Confirm Password',
-                          hintStyle: TextStyle(color: colorScheme.onSurface.withOpacity(0.5)),
+                          hintStyle: TextStyle(color: colorScheme.onSurface.withValues(alpha: 0.5)),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20),
                             borderSide: BorderSide(
@@ -335,7 +281,7 @@ class _SignupState extends State<Signup> {
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20),
                             borderSide: BorderSide(
-                              color: colorScheme.primary.withOpacity(0.5),
+                              color: colorScheme.primary.withValues(alpha: 0.5),
                               width: 3,
                             ),
                           ),
@@ -343,6 +289,68 @@ class _SignupState extends State<Signup> {
                       ),
                     ),
                     const SizedBox(height: 20),
+                    Obx(
+                          () => _showPasswordRules.value
+                          ? Column(
+                        children: [
+                          const SizedBox(height: 16),
+                          Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: colorScheme.surface.withValues(alpha: 0.5),
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(color: colorScheme.outline.withValues(alpha: 0.1)),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Password Requirements',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w600,
+                                    color: colorScheme.onSurface,
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                _buildPasswordRequirement(
+                                  _hasLength.value,
+                                  'At least 8 characters',
+                                  colorScheme,
+                                ),
+                                const SizedBox(height: 4),
+                                _buildPasswordRequirement(
+                                  _hasUppercase.value,
+                                  'One uppercase letter',
+                                  colorScheme,
+                                ),
+                                const SizedBox(height: 4),
+                                _buildPasswordRequirement(
+                                  _hasLowercase.value,
+                                  'One lowercase letter',
+                                  colorScheme,
+                                ),
+                                const SizedBox(height: 4),
+                                _buildPasswordRequirement(
+                                  _hasNumber.value,
+                                  'One number',
+                                  colorScheme,
+                                ),
+                                const SizedBox(height: 4),
+                                _buildPasswordRequirement(
+                                  _hasSpecial.value,
+                                  'One special character (!@#\$%^&*)',
+                                  colorScheme,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      )
+                          : const SizedBox.shrink(),
+                    ),
+
                     Obx(
                       () => TextButton.icon(
                         onPressed: _authController.isLoading.value ? null : _register,
@@ -390,7 +398,7 @@ class _SignupState extends State<Signup> {
                             'Or Continue with',
                             style: TextStyle(
                               fontSize: 12,
-                              color: colorScheme.onSurface.withOpacity(0.6),
+                              color: colorScheme.onSurface.withValues(alpha: 0.6),
                               fontWeight: FontWeight.w500,
                             ),
                           ),
@@ -454,7 +462,7 @@ class _SignupState extends State<Signup> {
               Text(
                 'Manage Your Entire Life in One Place',
                 style: GoogleFonts.raleway(
-                  color: colorScheme.onSurface.withOpacity(0.6),
+                  color: colorScheme.onSurface.withValues(alpha: 0.6),
                   fontSize: 14,
                 ),
               ),
@@ -477,7 +485,7 @@ class _SignupState extends State<Signup> {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               border: Border.all(
-                color: colorScheme.onSurface.withOpacity(0.3),
+                color: colorScheme.onSurface.withValues(alpha: 0.3),
                 width: 1.5,
               ),
             ),
@@ -487,7 +495,7 @@ class _SignupState extends State<Signup> {
           text,
           style: TextStyle(
             fontSize: 12,
-            color: met ? Colors.green : colorScheme.onSurface.withOpacity(0.6),
+            color: met ? Colors.green : colorScheme.onSurface.withValues(alpha: 0.6),
           ),
         ),
       ],

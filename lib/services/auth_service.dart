@@ -37,7 +37,9 @@ class AuthService {
     );
   }
 
-  Future<void> sendPasswordResetEmail({required String email}) {
+  Future<void> sendPasswordResetEmail({required String email}) async {
+    // Standard Firebase reset flow. 
+    // fetchSignInMethodsForEmail is removed in newer SDKs for security (enumeration protection).
     return _firebaseAuth.sendPasswordResetEmail(email: email);
   }
 

@@ -18,21 +18,16 @@ import 'package:lifeos/routes/app_routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> main() async {
-  // Run the app inside a guarded zone to ensure uncaught errors reach Crashlytics
   runZonedGuarded<Future<void>>(
     () async {
       WidgetsFlutterBinding.ensureInitialized();
 
-      // Prefer compile-time provided Firebase options (via --dart-define) for
-      // CI/production builds so API keys are not hard-coded in source. Fallback
-      // to generated firebase_options.dart for local development.
       final envOptions = loadFirebaseOptionsFromEnv();
       await Firebase.initializeApp(
         options: envOptions ?? DefaultFirebaseOptions.currentPlatform,
       );
 
-      // Preload persisted theme before the first frame so the app does not
-      // flash back to the default mode on launch.
+
       final prefs = await SharedPreferences.getInstance();
       final savedTheme = prefs.getString(ThemeController.themeKey) ?? 'dark';
       final initialThemeMode =
@@ -50,8 +45,7 @@ Future<void> main() async {
         Get.put(startupService, permanent: true);
       }
 
-      // Initialize notifications after Firebase and before the first routed
-      // screen so reminder permissions and channels are ready.
+
       await NotificationService().init();
 
       if (kDebugMode && !AppConfig.hasApiBaseUrl) {
