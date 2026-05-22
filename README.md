@@ -1,21 +1,72 @@
-# lifeos
+# LifeOS
 
-A Flutter app for personal productivity and life management.
+LifeOS is a Flutter-based personal productivity and life-management app. It brings daily planning, finance tracking, health monitoring, mental wellness, journaling, focus sessions, goals, habits, and profile management into one mobile experience.
 
-## Getting Started
+Firebase is used as the backend for authentication, cloud data storage, profile image storage, and crash reporting.
 
-This project is a starting point for a Flutter application.
+## Project Documents
 
-A few resources to get you started if this is your first Flutter project:
+- [QA Report](QA_REPORT.md)
+- [Performance Audit Index](PERFORMANCE_AUDIT_INDEX.md)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Features
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Firebase email/password authentication
+- Google Sign-In
+- Password reset and password update
+- Personalized onboarding flow
+- Main dashboard with quick summaries
+- Task management with deadlines, priorities, categories, completion status, and reminders
+- Finance tracker for income and expenses
+- Health tracker for steps, water intake, sleep, and health score
+- Health analytics and history
+- Mental wellness mood tracking
+- Daily journal and gratitude entries
+- Focus timer
+- Goals and habit tracking with streaks
+- Profile editing with profile photo upload
+- Notification preferences
+- Emergency mode screen
+- Light and dark theme support
 
-## Testing
+## Tech Stack
+
+- Flutter
+- Dart
+- Firebase Authentication
+- Cloud Firestore
+- Firebase Storage
+- Firebase Crashlytics
+- GetX for routing and state management
+- SharedPreferences and Flutter Secure Storage
+- Local notifications
+- Pedometer integration
+
+## App Structure
+
+- `lib/screen/` - app screens and feature pages
+- `lib/controllers/` - GetX controllers
+- `lib/services/` - Firebase, storage, notification, and utility services
+- `lib/models/` - data models
+- `lib/routes/` - app route names and route pages
+- `assets/` - images, icons, and certificates
+- `test/` - widget and unit tests
+
+## Running The App
+
+Install dependencies:
+
+```bash
+flutter pub get
+```
+
+Run the app:
+
+```bash
+flutter run
+```
+
+Run tests:
 
 ```bash
 flutter test
@@ -23,38 +74,31 @@ flutter test
 
 ## Production Build Notes
 
-- Provide API runtime config via compile-time defines:
+Provide API runtime config with compile-time defines when needed:
 
 ```bash
 flutter run --dart-define=API_BASE_URL=https://api.example.com
 ```
 
-- Build release with obfuscation:
+Build a release APK with obfuscation:
 
 ```bash
 flutter build apk --release --obfuscate --split-debug-info=build/debug-info
 ```
 
-- Crash reporting is wired through Firebase Crashlytics in `lib/main.dart`.
+Crash reporting is wired through Firebase Crashlytics in `lib/main.dart`.
 
 ## Deep Linking
 
 - Android App Links intent filter is configured in `android/app/src/main/AndroidManifest.xml`.
 - Replace `lifeos.app` with your real domain and publish `assetlinks.json` on the domain.
-- iOS Universal Links require an Associated Domains entitlement (not yet configured in Xcode project settings).
+- iOS Universal Links require an Associated Domains entitlement in the Xcode project settings.
 
-## GetX Navigation Conventions
+## Navigation
 
-- Use `Get.toNamed(...)` for forward navigation.
-- Use `Get.offNamed(...)` / `Get.offAllNamed(...)` when replacing route stacks.
-- Use `Get.back()` instead of `Navigator.pop(context)`.
-- When a dialog/screen must return a value, use `Get.back(result: value)`.
+LifeOS uses GetX navigation.
 
-## Routing Structure
-
-- Route names: `lib/routes/app_routes.dart`
-- Route pages: `lib/routes/app_pages.dart`
-- Global binding scaffold: `lib/bindings/app_binding.dart`
-- Route middleware scaffold: `lib/middleware/route_middleware.dart`
-
-The middleware is currently pass-through (logs route names) and is ready for future auth/guard logic.
+- Route names are defined in `lib/routes/app_routes.dart`
+- Route pages are defined in `lib/routes/app_pages.dart`
+- Global dependencies are configured in `lib/bindings/app_binding.dart`
+- Route middleware is available in `lib/middleware/route_middleware.dart`
